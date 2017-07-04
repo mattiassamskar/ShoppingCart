@@ -6,10 +6,10 @@ export default class App extends React.Component {
       {
         name: 'milk'
       },
-        {
+      {
         name: 'butter'
       },
-        {
+      {
         name: 'soap'
       }
     ]
@@ -18,7 +18,35 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <ItemList items={this.state.items}/>
+        <ItemForm addItem={this.addItem} />
+        <ItemList items={this.state.items} />
+      </div>
+    );
+  };
+
+  addItem = (item) => {
+    this.setState(prevState => ({items: prevState.items.concat(item)}));
+  };
+};
+
+class ItemForm extends React.Component {
+  state = {
+    name: ''
+  };
+
+  handleClick = (event) => {
+    event.preventDefault();
+    this.props.addItem({name: this.state.name});
+  };
+
+  render() {
+    return (
+      <div>
+        <form>
+          <input value={this.state.name}
+            onChange={(event) => this.setState({ name: event.target.value })} />
+          <button onClick={this.handleClick}>Add</button>
+        </form>
       </div>
     );
   };
@@ -27,7 +55,7 @@ export default class App extends React.Component {
 const ItemList = (props) => {
   return (
     <div>
-      {props.items.map(item => <Item {...item} />)}
+      {props.items.map(item => <Item key={item.name} {...item} />)}
     </div>
   );
 }
