@@ -4,13 +4,16 @@ export default class App extends React.Component {
   state = {
     items: [
       {
-        name: 'milk'
+        name: 'milk',
+        isActive: true
       },
       {
-        name: 'butter'
+        name: 'butter',
+        isActive: true
       },
       {
-        name: 'soap'
+        name: 'soap',
+        isActive: false
       }
     ]
   }
@@ -36,7 +39,7 @@ class ItemForm extends React.Component {
 
   handleClick = (event) => {
     event.preventDefault();
-    this.props.addItem({name: this.state.name});
+    this.props.addItem({name: this.state.name, isActive: true});
   };
 
   render() {
