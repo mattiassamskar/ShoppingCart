@@ -13,6 +13,13 @@ module.exports = {
     path: path.resolve('dist'),
     filename: 'index_bundle.js'
   },
+  devServer: {
+    proxy: {
+      '/**': {
+        target: 'http://localhost:3000'
+      },
+    }
+  },
   devtool: 'source-map',
   module: {
     loaders: [
