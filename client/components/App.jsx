@@ -18,7 +18,7 @@ export default class App extends React.Component {
     ]
   }
 
-  render() {
+  render = () => {
     return (
       <div>
         <ItemForm addItem={this.addItem} />
@@ -63,6 +63,20 @@ const ItemList = (props) => {
   );
 }
 
-const Item = (props) => {
-  return <div>{props.name}</div>;
+class Item extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      name: props.name,
+      isActive: props.isActive
+    };
+  }
+
+  handleClick = (event) => {
+    this.setState(prevState => ({isActive: !prevState.isActive}))
+  };
+
+  render = () => {
+    return (<div onClick={this.handleClick}>{this.state.name} {this.state.isActive.toString()}</div>);
+  };
 }
