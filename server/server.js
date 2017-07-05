@@ -22,20 +22,21 @@ var items = [
   }
 ];
 
-app.get('/', (req, res) => {
+app.get('/items', (req, res) => {
   res.send(items);
 });
 
-app.post('/', (req, res) => {
-  items = items.concat({
+app.post('/items', (req, res) => {
+  const newItem = {
     id: Math.random().toString(),
     name: req.body.name,
     isActive: req.body.isActive
-  });
-  res.status(200).send();
+  };
+  items = items.concat(newItem);
+  res.send(newItem);
 });
 
-app.put('/:id', (req, res) => {
+app.put('/items/:id', (req, res) => {
   var item = items.find((i) => {
     return i.id === req.params.id;
   });
@@ -46,7 +47,7 @@ app.put('/:id', (req, res) => {
   }
 
   item.isActive = req.body.isActive;
-  res.status(200).send();
+  res.send(item);
 });
 
 app.listen(3000, () => {
