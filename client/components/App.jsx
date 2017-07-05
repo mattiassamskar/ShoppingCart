@@ -1,22 +1,24 @@
 import React from 'react';
+import axios from 'axios';
 
 export default class App extends React.Component {
   state = {
-    items: [
-      {
-        name: 'milk',
-        isActive: true
-      },
-      {
-        name: 'butter',
-        isActive: true
-      },
-      {
-        name: 'soap',
-        isActive: false
-      }
-    ]
+    items: []
   }
+
+  componentDidMount = (props) => {
+    axios.get('/items')
+      .then((resp) => {
+        this.setState({ items: resp.data });
+      });
+  };
+
+  addItem = (item) => {
+    axios.post('/items', item)
+      .then((resp) => {
+        this.setState(prevState => ({ items: prevState.items.concat(resp.data) }));
+      });
+  };
 
   render = () => {
     return (
@@ -25,10 +27,6 @@ export default class App extends React.Component {
         <ItemList items={this.state.items} />
       </div>
     );
-  };
-
-  addItem = (item) => {
-    this.setState(prevState => ({items: prevState.items.concat(item)}));
   };
 };
 
@@ -39,7 +37,7 @@ class ItemForm extends React.Component {
 
   handleClick = (event) => {
     event.preventDefault();
-    this.props.addItem({name: this.state.name, isActive: true});
+    this.props.addItem({ name: this.state.name, isActive: true });
   };
 
   render() {
@@ -64,16 +62,21 @@ const ItemList = (props) => {
 }
 
 class Item extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
+      id: props.id,
       name: props.name,
       isActive: props.isActive
     };
   }
 
   handleClick = (event) => {
-    this.setState(prevState => ({isActive: !prevState.isActive}))
+    axios.put('/items/' + this.state.id, {
+      isActive: !this.state.isActive
+    }).then((resp) => {
+      this.setState(resp.data);
+    });
   };
 
   render = () => {
