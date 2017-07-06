@@ -3,10 +3,13 @@ import { Observable, Observer } from 'rxjs';
 
 export const whenItemsChanged =
   Observable.create(observer => {
-    axios.get('/items')
-      .then((resp) => {
-        observer.next(resp.data);
-      });
+    setInterval(
+      () => {
+        axios.get('/items')
+          .then((resp) => {
+            observer.next(resp.data);
+          });
+      }, 1000);
   });
 
 export const addItem = (item) => {
