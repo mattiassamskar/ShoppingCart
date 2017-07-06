@@ -4,7 +4,7 @@ import Item from './Item.jsx';
 const ItemList = (props) => {
   return (
     <div>
-      {props.items.map(item => <Item key={item.name} {...item} />)}
+      {props.items.map(item => <Item key={item.id} {...item} />)}
     </div>
   );
 };
