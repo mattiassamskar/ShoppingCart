@@ -1,4 +1,5 @@
 import React from 'react';
+import ItemList from './ItemList.jsx';
 import ItemForm from './ItemForm.jsx';
 import Item from './Item.jsx';
 import * as itemService from './itemService.js'
@@ -29,12 +30,4 @@ export default class App extends React.Component {
       </div>
     );
   };
-}
-
-const ItemList = (props) => {
-  return (
-    <div>
-      {props.items.map(item => <Item key={item.name} {...item} />)}
-    </div>
-  );
 }
