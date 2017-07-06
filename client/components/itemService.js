@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Observable, Observer } from 'rxjs';
+import { Observable, Observer } from 'rxjs/Observable';
 
 export const whenItemsChanged =
   Observable.create(observer => {
