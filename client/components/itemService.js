@@ -4,7 +4,7 @@ import { Observable, Observer } from 'rxjs/Observable';
 
 export const whenItemsChanged =
   Observable.create(observer => {
-    var socket = io.connect('http://localhost:3000');
+    var socket = io.connect();
     socket.on('items', (data) => {
       observer.next(data);
     });
