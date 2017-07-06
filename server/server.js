@@ -1,7 +1,8 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const app = express();
+var app = require('express')();
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
 
+const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
 var items = [
@@ -33,7 +34,9 @@ app.post('/items', (req, res) => {
     isActive: req.body.isActive
   };
   items = items.concat(newItem);
-  res.send(newItem);
+
+  res.status(200).send();
+  io.emit('items', items);
 });
 
 app.put('/items/:id', (req, res) => {
@@ -45,11 +48,12 @@ app.put('/items/:id', (req, res) => {
     res.status(404).send();
     return;
   }
-
   item.isActive = req.body.isActive;
-  res.send(item);
+
+  res.status(200).send();
+  io.emit('items', items);  
 });
 
-app.listen(3000, () => {
+server.listen(3000, () => {
   console.log('Listening on port 3000')
 });

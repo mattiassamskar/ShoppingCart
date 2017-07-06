@@ -1,21 +1,19 @@
 import axios from 'axios';
+import io from 'socket.io-client';
 import { Observable, Observer } from 'rxjs/Observable';
 
 export const whenItemsChanged =
   Observable.create(observer => {
-    setInterval(
-      () => {
-        axios.get('/items')
-          .then((resp) => {
-            observer.next(resp.data);
-          });
-      }, 1000);
+    var socket = io.connect('http://localhost:3000');
+    socket.on('items', (data) => {
+      observer.next(data);
+    });
   });
 
 export const addItem = (item) => {
-  return axios.post('/items', item);
+  axios.post('/items', item);
 };
 
 export const updateItem = (itemId, data) => {
-  return axios.put('/items/' + itemId, data);
+  axios.put('/items/' + itemId, data);
 };
