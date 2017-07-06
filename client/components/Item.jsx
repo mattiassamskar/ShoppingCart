@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import * as itemService from './itemService.js'
 
 export default class Item extends React.Component {
   constructor(props) {
@@ -12,7 +13,7 @@ export default class Item extends React.Component {
   };
 
   handleClick = (event) => {
-    axios.put('/items/' + this.state.id, {
+    itemService.updateItem(this.state.id, {
       isActive: !this.state.isActive
     }).then((resp) => {
       this.setState(resp.data);

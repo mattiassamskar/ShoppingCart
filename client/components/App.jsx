@@ -1,22 +1,21 @@
 import React from 'react';
-import axios from 'axios';
 import ItemForm from './ItemForm.jsx';
 import Item from './Item.jsx';
+import * as itemService from './itemService.js'
 
 export default class App extends React.Component {
   state = {
     items: []
   }
 
-  componentDidMount = (props) => {
-    axios.get('/items')
-      .then((resp) => {
-        this.setState({ items: resp.data });
-      });
+  componentDidMount = () => {
+    itemService.whenItemsChanged.subscribe((items) => {
+      this.setState({ items: items })
+    });
   };
 
   addItem = (item) => {
-    axios.post('/items', item)
+    itemService.addItem(item)
       .then((resp) => {
         this.setState(prevState => ({ items: prevState.items.concat(resp.data) }));
       });
