@@ -23,6 +23,10 @@ var items = [
   }
 ];
 
+io.on('connection', (socket) => {
+  io.to(socket.id).emit('items', items);
+});
+
 app.get('/items', (req, res) => {
   res.send(items);
 });
