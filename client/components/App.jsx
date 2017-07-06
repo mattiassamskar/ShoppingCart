@@ -22,11 +22,15 @@ export default class App extends React.Component {
       });
   };
 
+  updateItem = (itemId, data) => {
+    itemService.updateItem(itemId, data);
+  };
+
   render = () => {
     return (
       <div>
         <ItemForm addItem={this.addItem} />
-        <ItemList items={this.state.items} />
+        <ItemList items={this.state.items} updateItem={this.updateItem}/>
       </div>
     );
   };
