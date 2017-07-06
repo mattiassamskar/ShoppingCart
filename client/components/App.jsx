@@ -16,10 +16,7 @@ export default class App extends React.Component {
   };
 
   addItem = (item) => {
-    itemService.addItem(item)
-      .then((resp) => {
-        this.setState(prevState => ({ items: prevState.items.concat(resp.data) }));
-      });
+    itemService.addItem(item);
   };
 
   updateItem = (itemId, data) => {
