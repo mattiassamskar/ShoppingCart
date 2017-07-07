@@ -10,10 +10,24 @@ export const whenItemsChanged =
     });
   });
 
-export const addItem = (item) => {
-  axios.post('/items', item);
+export const addItem = (name) => {
+  axios.post('/items', { name: name });
 };
 
-export const updateItem = (itemId, data) => {
-  axios.put('/items/' + itemId, data);
+export const updateItem = (item) => {
+  axios.put('/items/' + item.id, { item: item });
+};
+
+export const moveItemUp = (itemSortOrder) => {
+  axios.post('/items/reorder', {
+    sortOrder1: itemSortOrder,
+    sortOrder2: itemSortOrder - 1
+  })
+};
+
+export const moveItemDown = (itemSortOrder) => {
+  axios.post('/items/reorder', {
+    sortOrder1: itemSortOrder,
+    sortOrder2: itemSortOrder + 1
+  })
 };
