@@ -1,12 +1,23 @@
 import React from 'react';
 import Item from './Item.jsx';
+import * as itemService from './itemService.js'
 
-const ItemList = (props) => {
-  return (
-    <div>
-      {props.items.map(item => <Item key={item.id} updateItem={props.updateItem} {...item} />)}
-    </div>
-  );
+export default class ItemList extends React.Component {
+  state = {
+    items: []
+  }
+
+  componentDidMount = () => {
+    itemService.whenItemsChanged.subscribe((items) => {
+      this.setState({ items: items })
+    });
+  };
+
+  render = () => {
+    return (
+      <div>
+        {this.state.items.map(item => <Item key={item.id} {...item} />)}
+      </div>
+    );
+  };
 };
-
-export default ItemList;

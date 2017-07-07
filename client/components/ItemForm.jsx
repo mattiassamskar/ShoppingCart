@@ -1,4 +1,5 @@
 import React from 'react';
+import * as itemService from './itemService.js'
 
 export default class ItemForm extends React.Component {
   state = {
@@ -7,7 +8,7 @@ export default class ItemForm extends React.Component {
 
   handleClick = (event) => {
     event.preventDefault();
-    this.props.addItem({ name: this.state.name, isActive: true });
+    itemService.addItem(name);
   };
 
   render() {
