@@ -41,7 +41,7 @@ app.post('/items', (req, res) => {
 });
 
 app.put('/items/:id', (req, res) => {
-  updateItem(req.item);
+  updateItem(req.body.item);
   res.status(200).send();
   io.emit('items', getItems());
 });
