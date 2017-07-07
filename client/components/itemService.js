@@ -18,16 +18,13 @@ export const updateItem = (item) => {
   axios.put('/items/' + item.id, { item: item });
 };
 
-export const moveItemUp = (itemSortOrder) => {
-  axios.post('/items/reorder', {
-    sortOrder1: itemSortOrder,
-    sortOrder2: itemSortOrder - 1
-  })
+export const deleteItem = (itemId) => {
+  axios.delete('/items/' + itemId);
 };
 
-export const moveItemDown = (itemSortOrder) => {
+export const reorderItems = (sortOrder1, sortOrder2) => {
   axios.post('/items/reorder', {
-    sortOrder1: itemSortOrder,
-    sortOrder2: itemSortOrder + 1
+    sortOrder1: sortOrder1,
+    sortOrder2: sortOrder2
   })
 };

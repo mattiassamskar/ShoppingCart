@@ -12,11 +12,15 @@ const Item = (props) => {
   };
 
   const moveItemUp = () => {
-    itemService.moveItemUp(props.sortOrder);
+    props.moveItemUp(props.sortOrder);
   };
 
   const moveItemDown = () => {
-    itemService.moveItemDown(props.sortOrder);
+    props.moveItemDown(props.sortOrder);
+  };
+
+  const deleteItem = () => {
+    itemService.deleteItem(props.id);
   };
 
   return (
@@ -26,6 +30,7 @@ const Item = (props) => {
       <div>{props.sortOrder}</div>
       <div onClick={moveItemUp}>up</div>
       <div onClick={moveItemDown}>down</div>
+      <div onClick={deleteItem}>delete</div>
     </div>
   );
 }

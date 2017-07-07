@@ -7,6 +7,26 @@ export default class ItemList extends React.Component {
     items: []
   }
 
+  moveItemUp = (itemSortOrder) => {
+    const sortOrders = this.state.items
+      .map(item => item.sortOrder)
+      .filter(s => s < itemSortOrder);
+
+    if (sortOrders.length == 0) return;
+
+    itemService.reorderItems(itemSortOrder, Math.max(...sortOrders));
+  };
+
+  moveItemDown = (itemSortOrder) => {
+    const sortOrders = this.state.items
+      .map(item => item.sortOrder)
+      .filter(s => s > itemSortOrder);
+
+    if (sortOrders.length == 0) return;
+
+    itemService.reorderItems(itemSortOrder, Math.min(...sortOrders));
+  };
+
   componentDidMount = () => {
     itemService.whenItemsChanged.subscribe((items) => {
       this.setState({ items: items })
@@ -16,7 +36,12 @@ export default class ItemList extends React.Component {
   render = () => {
     return (
       <div>
-        {this.state.items.map(item => <Item key={item.id} {...item} />)}
+        {this.state.items.map(item =>
+          <Item key={item.id}
+            moveItemUp={this.moveItemUp}
+            moveItemDown={this.moveItemDown}
+            {...item}
+          />)}
       </div>
     );
   };
