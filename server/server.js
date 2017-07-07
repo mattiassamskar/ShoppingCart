@@ -35,61 +35,75 @@ app.get('/items', (req, res) => {
 });
 
 app.post('/items', (req, res) => {
-  const item = {
-    id: Math.random().toString(),
-    name: req.body.name,
-    isActive: req.body.isActive
-  };
-  addItem(item);
-
+  addItem(req.body.name);
   res.status(200).send();
-  io.emit('items',  getItems());
+  io.emit('items', getItems());
 });
 
 app.put('/items/:id', (req, res) => {
-  var item = getItemById(req.params.id);
-
-  if (!item) {
-    res.status(404).send();
-    return;
-  }
-  item.isActive = req.body.isActive;
-
+  updateItem(req.item);
   res.status(200).send();
   io.emit('items', getItems());
 });
 
 app.post('/items/reorder', (req, res) => {
-  var item1 = getItemById(req.params.itemIds[0]);
-  var item2 = getItemById(req.params.itemIds[1]);
-  
-  const sortOrder1 = item1.sortOrder;
-  const sortOrder2 = item2.sortOrder;
-
-  item1.sortOrder = sortOrder2;
-  item2.sortOrder = sortOrder1;
-
+  reorderItems(req.body.sortOrder1, req.body.sortOrder2);
   res.status(200).send();
   io.emit('items', getItems());
 });
 
-const getItemById = (id) => {
-  return getItems().find((item) => {
-    return item.id === id;
-  });
+app.delete('/items/:id', (req, res) => {
+  deleteItem(req.params.id);
+  res.status(200).send();
+  io.emit('items', getItems());
+});
+
+const deleteItem = (itemId) => {
+  items = items.filter(item => item.id !== itemId);
+};
+
+const getItemById = (itemId) => {
+  return getItems().find(item => item.id === itemId);
+};
+
+const getItemBySortOrder = (sortOrder) => {
+  return getItems().find(item => item.sortOrder === sortOrder);
 };
 
 const getItems = () => {
-  items.sort((item1, item2) => {
-    return item1.sortOrder - item2.sortOrder;
-  });
+  items.sort((item1, item2) => item1.sortOrder - item2.sortOrder);
   return items;
 };
 
-const addItem = (item) => {
-  const sortOrders = getItems().map((item) => item.sortOrder);
-  item.sortOrder = Math.max(...sortOrders) + 1;
+const updateItem = (updatedItem) => {
+  var item = getItemById(updatedItem.id);
+
+  item.name = updatedItem.name;
+  item.isActive = updatedItem.isActive;
+  item.sortOrder = updatedItem.sortOrder;
+};
+
+const reorderItems = (sortOrder1, sortOrder2) => {
+  var item1 = getItemBySortOrder(sortOrder1);
+  var item2 = getItemBySortOrder(sortOrder2);
+
+  item1.sortOrder = sortOrder2;
+  item2.sortOrder = sortOrder1;
+};
+
+const addItem = (name) => {
+  const item = {
+    id: Math.random().toString(),
+    name: name,
+    isActive: true,
+    sortOrder: getNextSortOrder()
+  };
   items = items.concat(item);
+};
+
+const getNextSortOrder = () => {
+  const sortOrders = getItems().map(item => item.sortOrder);
+  return Math.max(...sortOrders) + 1;
 };
 
 server.listen(3000, () => {
