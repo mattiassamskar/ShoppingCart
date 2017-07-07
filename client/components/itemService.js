@@ -2,11 +2,22 @@ import axios from 'axios';
 import io from 'socket.io-client';
 import { Observable, Observer } from 'rxjs/Observable';
 
+const socket = io.connect();
+
 export const whenItemsChanged =
   Observable.create(observer => {
-    var socket = io.connect();
     socket.on('items', (data) => {
       observer.next(data);
+    });
+  });
+
+export const whenSocketStatusChanged =
+  Observable.create(observer => {
+    socket.on('connect', () => {
+      observer.next('Connected');
+    });
+    socket.on('error', () => {
+      observer.next('Offline');
     });
   });
 
