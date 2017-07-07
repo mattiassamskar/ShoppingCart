@@ -8,7 +8,8 @@ export default class ItemForm extends React.Component {
 
   handleClick = (event) => {
     event.preventDefault();
-    itemService.addItem(name);
+    itemService.addItem(this.state.name);
+    this.setState({name: ''});
   };
 
   render() {
