@@ -23,14 +23,20 @@ const Item = (props) => {
     itemService.deleteItem(props.id);
   };
 
-  return (
-    <div style={{display:'flex'}}>
-      <div onClick={toggleIsActive}>{props.name}</div>
-      <div>{props.isActive.toString()}</div>
-      <div>{props.sortOrder}</div>
+  const configElements = () => props.configMode ?
+    <div>
       <div onClick={moveItemUp}>up</div>
       <div onClick={moveItemDown}>down</div>
       <div onClick={deleteItem}>delete</div>
+    </div>
+    : <div></div>;
+
+  return (
+    <div style={{ display: 'flex' }}>
+      <div onClick={toggleIsActive}>{props.name}</div>
+      <div>{props.isActive.toString()}</div>
+      <div>{props.sortOrder}</div>
+      {configElements}
     </div>
   );
 }

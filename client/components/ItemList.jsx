@@ -40,6 +40,7 @@ export default class ItemList extends React.Component {
           <Item key={item.id}
             moveItemUp={this.moveItemUp}
             moveItemDown={this.moveItemDown}
+            configMode={this.props.configMode}
             {...item}
           />)}
       </div>
